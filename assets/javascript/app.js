@@ -36,22 +36,61 @@ $(document).ready(function () {
         } else if (tvShows.includes(newShow)) {
             alert("show already created")
         } else {
+            console.log("newShow: " + newShow)
             tvShows.push(newShow)
             // try to clear the value of the search bar once the item has been added 
             // $(".form-control").clear()
             let newBtn = $("<button>")
             newBtn.attr("id", newShow).text(newShow)
-            newBtn.attr("class", "btn")
-            $("#buttons-appear-here").prepend(newBtn)
+            newBtn.attr("class", "showBtn")
+            $(".buttons-appear-here").prepend(newBtn)
             console.log(tvShows);
         }
     })
 
-    // for (let i = 0; i < 5; i++) {
-    //     tvShows.forEach(
+    // get the ID of the show btn converted
+    // pass it into the request 
+    // get a response & do somethign with it 
+    $(".showBtn").on("click", function () {
+        // console.log(event)
+        let show = $(".showBtn").attr("text")
+        // globally replace blank spaces with "" in order to join the name of shows more
+        // more thank 1 word long.
+        show.replace(/ /g, "")
+        console.log(show)
 
-    //     )
+        for (let a = 0; a < 9; a++) {
 
-    // }
+            let queryURL = "http://api.giphy.com/v1/gifs/random?&api_key=bGj6DeJcRbOsxXYoAoQNgYUmJE7TDgDB&tag=" + show + '"';
+            $.ajax({
+                url: queryURL,
+                method: "GET"
+            }).then(function (response) {
+                // obtain data from response 
+                var result = response.data;
+                // create a div to store our GIFs
+                let gifDiv = $("<div>");
+                // create a p-tag to store the rating of the GIF
+                let p = $("<p>").text("Rating: " + result.rating)
+                // create an image tag to store the GIF 
+                let gifImage = $("<img>")
+                // set an attribute of source yo out image tag
+                gifImage.attr("src", result.images.fixed_height.url)
+                // append p-tag wihth rating onto gifDiv
+                gifDiv.append(p)
+                // prepend gifDive onto HTML 
+                $("#gifs-appear-here").prepend(gifDiv)
+
+
+
+
+                console.log(queryURL)
+                console.log(response)
+            })
+
+        }
+
+
+    })
 
 })
