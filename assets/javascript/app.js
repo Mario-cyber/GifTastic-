@@ -52,9 +52,9 @@ $(document).ready(function () {
                 // do something with replace
                 // show.replace(/ /g, "")
                 console.log(show)
-                for (let a = 0; a < 9; a++) {
+                for (let a = 0; a < 10; a++) {
                     // console.log('show 2', show)
-                    let queryURL = "http://api.giphy.com/v1/gifs/random?&api_key=bGj6DeJcRbOsxXYoAoQNgYUmJE7TDgDB&rating=&tag=" + show + '"';
+                    let queryURL = "https://api.giphy.com/v1/gifs/random?&api_key=bGj6DeJcRbOsxXYoAoQNgYUmJE7TDgDB&rating=&tag=" + show + '"';
                     $.ajax({
                         url: queryURL,
                         method: "GET"
@@ -65,13 +65,17 @@ $(document).ready(function () {
                         // create a div to store our GIFs
                         let gifDiv = $("<div>");
                         // create a p-tag to store the rating of the GIF
-                        let p = $("<p>").text("Rating: " + result.rating)
+
+                        // let p = $("<p>").text("Rating: " + result.rating)
+
                         // create an image tag to store the GIF 
                         let gifImage = $("<img>")
                         // set an attribute of source yo out image tag
                         gifImage.attr("src", result.images.original.url)
                         // append p-tag wihth rating onto gifDiv
-                        gifDiv.append(p)
+                        // gifDiv.append(p)
+
+
                         gifDiv.append(gifImage)
                         // prepend gifDive onto HTML 
                         $("#gifs-appear-here").prepend(gifDiv)
