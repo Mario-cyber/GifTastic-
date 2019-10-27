@@ -29,7 +29,7 @@ $(document).ready(function () {
         // extract the vule of the search input 
         // if the show already exist in the array or no input is given, alert user
         // otherwise push it to array of shows  
-        newShow = $("#searchbar").val().trim()
+        newShow = $("#searchbar").val().trim().toLowerCase()
         if (!newShow.length) {
             alert("please enter a tv show")
         } else if (tvShows.includes(newShow)) {
@@ -37,6 +37,7 @@ $(document).ready(function () {
         } else {
             console.log("newShow: " + newShow)
             tvShows.push(newShow)
+            $("#searchbar").val("")
             // try to clear the value of the search bar once the item has been added 
             // $(".form-control").clear()
             let newBtn = $("<button>")
@@ -64,18 +65,11 @@ $(document).ready(function () {
                         console.log(result)
                         // create a div to store our GIFs
                         let gifDiv = $("<div>");
-                        // create a p-tag to store the rating of the GIF
-
-                        // let p = $("<p>").text("Rating: " + result.rating)
-
                         // create an image tag to store the GIF 
                         let gifImage = $("<img>")
                         // set an attribute of source yo out image tag
                         gifImage.attr("src", result.images.original.url)
-                        // append p-tag wihth rating onto gifDiv
-                        // gifDiv.append(p)
-
-
+                        // append image onto gifDiv
                         gifDiv.append(gifImage)
                         // prepend gifDive onto HTML 
                         $("#gifs-appear-here").prepend(gifDiv)
