@@ -4,25 +4,6 @@ $(document).ready(function () {
     console.log(tvShows);
     let newShow;
 
-    // for (let a = 0; a < 10; a++) {
-
-    //     for (let i = 0; i < l; i++) {
-    // globally replace blank spaces with "" in order to join the name of shows more
-    // more thank 1 word long.
-    // put in  request for each show in the array.
-    //         let show = tvShows[i].replace(/ /g, "")
-    //         let queryURL = "http://api.giphy.com/v1/gifs/random?&api_key=bGj6DeJcRbOsxXYoAoQNgYUmJE7TDgDB&tag=" + show + '"';
-    //         $.ajax({
-    //             url: queryURL,
-    //             method: "GET"
-    //         }).then(function (response) {
-    //             console.log(queryURL)
-    //             console.log(response)
-    //         })
-
-    //     }
-    // }
-
     $("#addNewMovie").on("click", function (event) {
         //  prevent page from resetting when the search btn is clicked 
         event.preventDefault()
@@ -42,12 +23,13 @@ $(document).ready(function () {
             // $(".form-control").clear()
             let newBtn = $("<button>")
             newBtn.attr("id", newShow).text(newShow)
-            newBtn.attr("class", "showBtn1")
+            newBtn.attr("class", "showBtn")
             newBtn.attr("value", newShow)
             $(".buttons-appear-here").prepend(newBtn)
             console.log(tvShows);
 
-            $(".showBtn1").on("click", function () {
+            $(".showBtn").on("click", function () {
+                event.preventDefault()
                 console.log('hello', this)
                 let show = this.id;
                 // do something with replace
@@ -62,88 +44,62 @@ $(document).ready(function () {
                     }).then(function (response) {
                         // obtain data from response 
                         let result = response.data;
-                        console.log(result)
+                        // console.log(result)
                         // create a div to store our GIFs
                         let gifDiv = $("<div>");
                         // create an image tag to store the GIF 
                         let gifImage = $("<img>")
-                        // set an attribute of source yo out image tag
-                        gifImage.attr("src", result.images.original.url)
+                        // set an attribute of source to the image tag
+                        // gifImage.attr("src", result.images.original.url)
+                        gifImage.attr("src", result.images.original_still.url)
+                        // store both the original_still and orginal urls's into data types 
+                        gifImage.attr("data-move", result.images.original.url)
+                        gifImage.attr("data-pause", result.images.original_still.url)
+                        // set a "state attribute" to recognize wether image is paused or not (thanks to Lisa Michael for showing me this approach)
+                        gifImage.attr("data-state", "paused")
+                        // give the GIFs a common class
+                        gifImage.attr("class", "gif")
                         // append image onto gifDiv
                         gifDiv.append(gifImage)
                         // prepend gifDive onto HTML 
                         $("#gifs-appear-here").prepend(gifDiv)
-                        console.log(queryURL)
-                        console.log(response)
+                        // console.log(queryURL)
+                        // console.log(response)
+
+                        // set another on click function in order to change the stae of you GIFs
+                        $(".gif").on("click", function () {
+                            // set on click function for individual GIFs and retrieve and decalsre their "state", "move", and "pause" data
+                            let state = $(this).attr("data-state");
+                            let movingGif = $(this).attr("data-move");
+                            let pausedGif = $(this).attr("data-pause");
+
+                            console.log(state)
+                            console.log(movingGif)
+                            console.log(pausedGif)
+
+                            if (state === "paused") {
+                                $(this).attr("src", movingGif);
+                                $(this).attr("data-state", "moving");
+                            } else if (state === "moving") {
+                                $(this).attr("src", pausedGif);
+                                $(this).attr("data-state", "paused");
+                            }
+
+
+                        })
                     })
 
                 }
             })
+
         }
     })
 
-    // get the ID of the show btn converted
-    // pass it into the request 
-    // get a response & do somethign with it 
-    $(".showBtn1").on("click", function () {
-        console.log(this.id)
-        // console.log(event)
-        // let show = $(".showBtn").val().trim()
-        let show = $(".showBtn").prop("textContent")
-        // let show = $(".showBtn").val().trim()
-        // globally replace blank spaces with "" in order to join the name of shows more
-        // more thank 1 word long.
-        // console.log('show 1', newShow)
-        show.replace(/ /g, "")
-        // console.log(show)
+    // $(".gif").on("click", function () {
 
-        // for (let a = 0; a < 9; a++) {
-        //     // console.log('show 2', show)
-        //     let queryURL = "http://api.giphy.com/v1/gifs/random?&api_key=bGj6DeJcRbOsxXYoAoQNgYUmJE7TDgDB&tag=" + newShow + '"';
-        //     $.ajax({
-        //         url: queryURL,
-        //         method: "GET"
-        //     }).then(function (response) {
+    //     src = $(this).attr("src");
+    //     console.log("this should be a link" + src)
 
-
-        //         // obtain data from response 
-
-        //         var result = response.data;
-
-        //         // create a div to store our GIFs
-
-        //         let gifDiv = $("<div>");
-
-        //         // create a p-tag to store the rating of the GIF
-
-        //         let p = $("<p>").text("Rating: " + result.rating)
-
-        //         // create an image tag to store the GIF 
-
-        //         let gifImage = $("<img>")
-
-        //         // set an attribute of source yo out image tag
-
-        //         gifImage.attr("src", result.images.fixed_height.url)
-
-        //         // append p-tag wihth rating onto gifDiv
-
-        //         gifDiv.append(p)
-
-        //         // prepend gifDive onto HTML 
-
-        //         $("#gifs-appear-here").prepend(gifDiv)
-
-
-
-
-        //         console.log(queryURL)
-        //         console.log(response)
-        //     })
-
-        // }
-
-
-    })
+    // })
 
 })
